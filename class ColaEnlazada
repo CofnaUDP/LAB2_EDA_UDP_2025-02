@@ -1,0 +1,51 @@
+class ColaEnlazada<T> {
+   Nodo<T> inicio;
+   Nodo<T> fin;
+
+
+   public ColaEnlazada() {
+       inicio = null;
+       fin = null;
+   }
+
+
+   public boolean add(T valor) {
+       Nodo<T> nuevo = new Nodo<>(valor);
+       if (isEmpty()) {
+           inicio = nuevo;
+           fin = nuevo;
+       } else {
+           fin.siguiente = nuevo;
+           fin = nuevo;
+       }
+       return true;
+   }
+
+
+   public T poll() {
+       if (isEmpty()) {
+           throw new RuntimeException("La cola está vacía");
+       }
+       T valor = inicio.valor;
+       inicio = inicio.siguiente;
+       if (inicio == null) {
+           fin = null;
+       }
+       return valor;
+   }
+
+
+   public T peek() {
+       if (isEmpty()) {
+           throw new RuntimeException("La cola está vacía");
+       }
+       return inicio.valor;
+   }
+
+
+   public boolean isEmpty() {
+       return inicio == null;
+   }
+}
+
+
