@@ -1,0 +1,47 @@
+class Alerta {
+   String nombre;
+   double probFallo;
+   static Random random;
+
+
+   public Alerta(String nombre, double probFallo, long semilla) {
+       this.nombre = nombre;
+       this.probFallo = probFallo;
+       if (random == null) {
+           random = new Random(semilla);
+       }
+   }
+
+
+   public boolean procesarLlamada(PilaEnlazada<Alerta> pila, int limite) {
+       if (contarProfundidad(pila) >= limite) {
+           return true;
+       }
+       double numero = random.nextDouble();
+       if (numero < probFallo) {
+           return false;
+       }
+       String nuevoNombre = "Alerta-Nivel-" + contarProfundidad(pila);
+       Alerta nueva = new Alerta(nuevoNombre, probFallo, 0);
+       pila.push(nueva);
+       return nueva.procesarLlamada(pila, limite);
+   }
+
+
+   private int contarProfundidad(PilaEnlazada<Alerta> pila) {
+       int contador = 0;
+       Nodo<Alerta> aux = pila.tope;
+       while (aux != null) {
+           contador++;
+           aux = aux.siguiente;
+       }
+       return contador;
+   }
+
+
+   public String toString() {
+       return nombre;
+   }
+}
+
+
