@@ -1,0 +1,43 @@
+public class Main {
+   static long semilla = 42;
+   static double probFallo = 0.15;
+   static int numAlertas = 5;
+   static int limiteRecursion = 5;
+
+
+   static ColaEnlazada<Alerta> cola = new ColaEnlazada<>();
+   static PilaEnlazada<Alerta> pila = new PilaEnlazada<>();
+
+
+   public static void generarAlertas(int cantidad) {
+       for (int i = 0; i < cantidad; i++) {
+           Alerta a = new Alerta("Alerta-Inicial-" + i, probFallo, semilla);
+           cola.add(a);
+       }
+   }
+
+
+   public static void iniciarSimulacion() {
+       while (!cola.isEmpty()) {
+           Alerta actual = cola.poll();
+           System.out.println(">>> Procesando " + actual.nombre);
+           pila.push(actual);
+           boolean exito = actual.procesarLlamada(pila, limiteRecursion);
+           if (exito) {
+               System.out.println("Se completó la cascada.");
+           } else {
+               System.out.println("Se interrumpió la cascada.");
+               System.out.println("Stack Trace: " + pila.toString());
+           }
+           pila = new PilaEnlazada<>();
+           System.out.println("---------------------------");
+       }
+   }
+
+
+   public static void main(String[] args) {
+       generarAlertas(numAlertas);
+       iniciarSimulacion();
+   }
+}
+
