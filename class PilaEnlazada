@@ -1,0 +1,51 @@
+class PilaEnlazada<T> {
+   Nodo<T> tope;
+
+
+   public PilaEnlazada() {
+       tope = null;
+   }
+
+
+   public void push(T valor) {
+       Nodo<T> nuevo = new Nodo<>(valor);
+       nuevo.siguiente = tope;
+       tope = nuevo;
+   }
+
+
+   public T pop() {
+       if (isEmpty()) {
+           throw new RuntimeException("La pila está vacía");
+       }
+       T valor = tope.valor;
+       tope = tope.siguiente;
+       return valor;
+   }
+
+
+   public T peek() {
+       if (isEmpty()) {
+           throw new RuntimeException("La pila está vacía");
+       }
+       return tope.valor;
+   }
+
+
+   public boolean isEmpty() {
+       return tope == null;
+   }
+
+
+   public String toString() {
+       String texto = "Pila: ";
+       Nodo<T> aux = tope;
+       while (aux != null) {
+           texto += aux.valor + " ";
+           aux = aux.siguiente;
+       }
+       return texto;
+   }
+}
+
+
